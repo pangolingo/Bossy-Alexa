@@ -13,7 +13,12 @@ const RESPONSES = [
 
 app.intent("BossyAlexaIntent", {
     "slots": { "name": "AMAZON.FirstName", "action": "ACTION" },
-    "utterances": ["tell {-|name} to {action}"]
+    "utterances": [
+      "tell {names|name} to {actions|action}",
+      "please tell {names|name} to {actions|action}",
+      "ask {names|name} to {actions|action}",
+      "{names|name} needs to {actions|action}"
+    ]
   },
   function(request, response) {
     var name = request.slot("name");
@@ -24,6 +29,27 @@ app.intent("BossyAlexaIntent", {
     return response.say(responseSentence(name, action));
   }
 );
+const ACTIONS = [
+  'go to bed',
+  'shut the door',
+  'wash the dishes',
+  'please be quiet',
+  'go to his room and shut the door',
+  'remember to bring the medicine',
+  'leave',
+  'go away',
+  'please be more helpful',
+  'give me a kiss',
+];
+app.customSlot("ACTION", ACTIONS);
+app.dictionary = {
+  "names": [
+    "james",
+    "john",
+    "william",
+  ],
+  "actions": ACTIONS,
+};
 
 function responseSentence(name, action){
   let sentence =  RESPONSES[Math.floor(Math.random() * RESPONSES.length)];
